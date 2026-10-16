@@ -1,0 +1,13 @@
+{
+  "name": "PocketShell",
+  "short_name": "PocketShell",
+  "description": "A Windows Terminal-style shell in your browser, with real git and GitHub built in.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0c0c0c",
+  "theme_color": "#202020",
+  "icons": [
+    { "src": "assets/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

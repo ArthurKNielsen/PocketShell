@@ -1,0 +1,279 @@
+:root {
+  --chrome: #202020;
+  --chrome-hover: #2d2d2d;
+  --chrome-text: #e6e6e6;
+  --chrome-dim: #9a9a9a;
+  --accent: #3b78ff;
+  --term-bg: #0c0c0c;
+  --menu-bg: #2b2b2b;
+  --border: #3a3a3a;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: var(--term-bg);
+  color: var(--chrome-text);
+  font-family: "Segoe UI Variable", "Segoe UI", system-ui, -apple-system, sans-serif;
+  overflow: hidden;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+}
+
+/* ---------- title bar / tabs ---------- */
+#titlebar {
+  display: flex;
+  align-items: flex-end;
+  height: 40px;
+  background: var(--chrome);
+  padding: 0 4px 0 8px;
+  flex: none;
+  user-select: none;
+}
+
+#tabs {
+  display: flex;
+  align-items: flex-end;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+#tabs::-webkit-scrollbar { display: none; }
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 34px;
+  min-width: 120px;
+  max-width: 220px;
+  padding: 0 6px 0 10px;
+  margin-right: 1px;
+  border-radius: 8px 8px 0 0;
+  color: var(--chrome-dim);
+  font-size: 12px;
+  cursor: default;
+  flex: none;
+}
+.tab:hover { background: var(--chrome-hover); color: var(--chrome-text); }
+.tab.active { background: var(--term-bg); color: var(--chrome-text); }
+.tab .title {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tab .close {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  flex: none;
+}
+.tab .close:hover { background: rgba(255,255,255,.12); }
+
+.ico {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  font: 700 8px/1 Consolas, monospace;
+  color: #fff;
+  flex: none;
+}
+.ico-pwsh { background: #2671be; }
+.ico-cmd { background: #3c3c3c; border: 1px solid #777; }
+.ico-bash { background: #e95420; font-size: 10px; }
+.ico-gear { background: transparent; font-size: 13px; color: var(--chrome-text); }
+
+#tab-actions { display: flex; align-items: center; height: 34px; flex: none; }
+.tb-btn {
+  border: 0;
+  background: transparent;
+  color: var(--chrome-text);
+  width: 32px;
+  height: 28px;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.tb-btn:hover { background: var(--chrome-hover); }
+#drag-space { flex: 1; }
+
+/* ---------- dropdown menu ---------- */
+.menu {
+  position: absolute;
+  top: 38px;
+  left: 8px;
+  z-index: 20;
+  min-width: 240px;
+  padding: 4px;
+  background: var(--menu-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.5);
+}
+.menu button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--chrome-text);
+  font: 13px inherit;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.menu button:hover { background: rgba(255,255,255,.08); }
+.menu hr { border: 0; border-top: 1px solid var(--border); margin: 4px 0; }
+
+/* ---------- terminal panes ---------- */
+#terminals {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  background: var(--term-bg);
+}
+.pane {
+  position: absolute;
+  inset: 0;
+  padding: 6px 0 0 8px;
+  visibility: hidden;
+}
+.pane.active { visibility: visible; }
+.pane .xterm { height: 100%; }
+.xterm-viewport { scrollbar-width: thin; }
+
+/* ---------- extra keys bar ---------- */
+#keybar {
+  display: none;
+  gap: 4px;
+  padding: 4px 4px calc(4px + env(safe-area-inset-bottom));
+  background: var(--chrome);
+  overflow-x: auto;
+  flex: none;
+}
+#keybar.show { display: flex; }
+#keybar button {
+  flex: 1 0 auto;
+  min-width: 40px;
+  height: 36px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--chrome-hover);
+  color: var(--chrome-text);
+  font: 14px Consolas, monospace;
+}
+#keybar button.on { background: var(--accent); border-color: var(--accent); }
+
+/* ---------- modals ---------- */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,.55);
+  padding: 16px;
+}
+.modal[hidden] { display: none; }
+.modal-card {
+  width: min(440px, 100%);
+  padding: 20px;
+  background: var(--menu-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.modal-card h2 { margin: 0 0 4px; font-size: 18px; font-weight: 600; }
+.modal-card label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--chrome-dim);
+}
+.modal-card label.row { flex-direction: row; align-items: center; gap: 8px; }
+.modal-card input[type=text], .modal-card input[type=number], .modal-card select {
+  padding: 7px 8px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: #1c1c1c;
+  color: var(--chrome-text);
+  font: 13px inherit;
+  font-family: inherit;
+}
+.modal-actions { display: flex; justify-content: flex-end; }
+button.primary, .modal-actions button, .editor-head button {
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: var(--chrome-hover);
+  color: var(--chrome-text);
+  font: 13px inherit;
+  font-family: inherit;
+  cursor: pointer;
+}
+button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* ---------- editor ---------- */
+.editor-card {
+  width: min(1000px, 100%);
+  height: min(85dvh, 100%);
+  display: flex;
+  flex-direction: column;
+  background: #1e1e1e;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.editor-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  background: var(--chrome);
+  font-size: 13px;
+}
+.editor-head .spacer { flex: 1; }
+#editor-name { font-family: Consolas, monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#editor-dirty { color: #e5c07b; }
+kbd { font: 10px Consolas, monospace; opacity: .7; margin-left: 4px; }
+#editor-text {
+  flex: 1;
+  resize: none;
+  border: 0;
+  outline: 0;
+  padding: 12px;
+  background: #1e1e1e;
+  color: #d4d4d4;
+  font: 14px/1.45 "Cascadia Code", "Cascadia Mono", Consolas, "Courier New", monospace;
+  tab-size: 4;
+  white-space: pre;
+}
+
+@media (max-width: 600px) {
+  .tab { min-width: 90px; }
+  kbd { display: none; }
+}

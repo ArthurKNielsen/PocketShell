@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+  <title>PocketShell</title>
+  <meta name="description" content="A Windows Terminal-style shell in your browser, with real git and GitHub built in.">
+  <meta name="theme-color" content="#202020">
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="vendor/xterm.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app">
+    <header id="titlebar">
+      <nav id="tabs" role="tablist" aria-label="Terminal tabs"></nav>
+      <div id="tab-actions">
+        <button id="new-tab" class="tb-btn" title="New tab (Alt+T)" aria-label="New tab">+</button>
+        <button id="profile-menu-btn" class="tb-btn" title="Open a profile / settings" aria-label="Profiles and settings">&#x2304;</button>
+      </div>
+      <div id="drag-space"></div>
+    </header>
+
+    <div id="profile-menu" class="menu" hidden>
+      <button data-profile="pwsh"><span class="ico ico-pwsh">&gt;_</span>Windows PowerShell</button>
+      <button data-profile="cmd"><span class="ico ico-cmd">C:\</span>Command Prompt</button>
+      <button data-profile="bash"><span class="ico ico-bash">$</span>Bash</button>
+      <hr>
+      <button data-action="settings"><span class="ico ico-gear">&#9881;</span>Settings</button>
+      <button data-action="help"><span class="ico ico-gear">?</span>Help &amp; docs</button>
+    </div>
+
+    <main id="terminals"></main>
+
+    <div id="keybar" aria-label="Extra keys">
+      <button data-key="esc">Esc</button>
+      <button data-key="tab">Tab</button>
+      <button data-key="ctrl" class="mod">Ctrl</button>
+      <button data-key="up">&#8593;</button>
+      <button data-key="down">&#8595;</button>
+      <button data-key="left">&#8592;</button>
+      <button data-key="right">&#8594;</button>
+      <button data-key="|">|</button>
+      <button data-key="/">/</button>
+      <button data-key="-">-</button>
+      <button data-key="~">~</button>
+      <button data-key="ctrlc">^C</button>
+    </div>
+  </div>
+
+  <div id="settings" class="modal" hidden>
+    <div class="modal-card" role="dialog" aria-labelledby="settings-title">
+      <h2 id="settings-title">Settings</h2>
+      <label>Color scheme <select id="set-theme"></select></label>
+      <label>Font size <input id="set-font" type="number" min="8" max="32"></label>
+      <label>Default profile
+        <select id="set-profile">
+          <option value="pwsh">Windows PowerShell</option>
+          <option value="cmd">Command Prompt</option>
+          <option value="bash">Bash</option>
+        </select>
+      </label>
+      <label>Git CORS proxy <input id="set-proxy" type="text" placeholder="https://cors.isomorphic-git.org"></label>
+      <label class="row"><input id="set-keybar" type="checkbox"> Show extra-keys bar (phones)</label>
+      <div class="modal-actions">
+        <button id="settings-close" class="primary">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="editor" class="modal" hidden>
+    <div class="editor-card">
+      <div class="editor-head">
+        <span id="editor-name"></span>
+        <span id="editor-dirty"></span>
+        <span class="spacer"></span>
+        <button id="editor-save" class="primary">Save <kbd>Ctrl+S</kbd></button>
+        <button id="editor-close">Close <kbd>Esc</kbd></button>
+      </div>
+      <textarea id="editor-text" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea>
+    </div>
+  </div>
+
+  <script src="vendor/buffer.min.js"></script>
+  <script src="vendor/lightning-fs.min.js"></script>
+  <script src="vendor/isomorphic-git.umd.min.js"></script>
+  <script src="vendor/isomorphic-git-http.umd.js"></script>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
